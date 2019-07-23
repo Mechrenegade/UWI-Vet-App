@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block content%}
+    <h1>Reports Page</h1>
+    <a href="{{ url_for('activity') }}" class="btn btn-sq-lg btn-primary">
+      <i class="fa fa-list fa-5x"></i><br/>
+      Activity <br/>Report
+    </a>
+    <a href="{{ url_for('export') }}" class="btn btn-sq-lg btn-success">
+      <i class="fa fa-list fa-5x"></i><br/>
+      Export <br/>Student Data
+    </a>
+    <!-- <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Competency Report</th>
+                <th scope="col">Clincian Report</th>
+                <th scope="col">Student Report</th>
+                <th scope="col">Full Activity Report</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row"><button href="#">Run</button></th>
+                <td><button href="#">Run</button></td>
+                <td><button href="#">Run</button></td>
+                <td><a href="{{ url_for('activity') }}">Run</a></td>
+              </tr>
+            </tbody>
+    </table> -->
+{% endblock content %}

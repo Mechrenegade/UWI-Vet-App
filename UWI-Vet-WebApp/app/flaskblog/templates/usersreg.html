@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block content%}
+    <h1>Registered Clinicians</h1>
+    <div class="row">
+        <div class="col">
+            <table class="table table-striped table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Clincian ID</th><th>Clinician Name</th><th>Email</th><th>Rotation</th><th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for val in User2 %}
+                    <tr>
+                        <td>{{val.id}}</td>
+                        <td>{{val.username}}</td>
+                        <td>{{val.email}}</td>
+                        <td>{{val.rotation}}</td>
+                        <td>
+                            {% if current_user.id != val.id %}
+                                <form action="{{ url_for('delete_user', user_id=val.id)}}" method="POST">
+                                    <button class="btn btn-warning btn-sm mt-1 mb-1" type="button" data-toggle="collapse" data-target="#{{ val.id }}" aria-expanded="false" aria-controls="collapseExample">
+                                    Delete
+                                    </button>
+                                    <div class="collapse" id="{{ val.id }}">
+                                        <div class="card card-body">
+                                        Are you sure you want to delete this User Account?
+                                        </div>
+                                <button class="btn btn-secondary btn-sm mt-1 mb-1" type="button" data-toggle="collapse" data-target="#{{ val.id }}" aria-expanded="false" aria-controls="collapseExample">
+                                            No
+                                        </button>
+                                        <input class="btn btn-danger btn-sm mt-1 mb-1" type="submit" value="Yes">
+                                
+                                    </div>
+                                </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock content %}

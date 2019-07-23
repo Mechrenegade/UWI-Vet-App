@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block content%}
+    <h1>Reminders and Notifications</h1>
+    <a href="{{ url_for('new_post') }}" class="btn btn-sq-lg btn-success">
+        <i class="fa fa-exclamation fa-5x"></i><br/>
+        Post a New </br>Notification
+    </a>
+    <a href="{{ url_for('reminders') }}" class="btn btn-sq-lg btn-warning">
+        <i class="fa fa-calendar fa-5x"></i><br/>
+        Create a New </br> 
+        Reminder
+    </a>
+
+
+{% endblock content %}

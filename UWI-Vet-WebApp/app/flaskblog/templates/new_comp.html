@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+{% block content%}
+    
+    <div class="content-section">
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">{{ legend }}</legend> 
+                <div class="form-group">
+                    {{ form.compid.label(class="form-control-label") }}
+                    {% if form.compid.errors %}
+                        {{ form.compid(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback"> 
+                            {% for errors in form.compid.errors %}
+                                <span>{{ errors }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.compid(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.rotation.label(class="form-control-label") }}
+                    {% if form.rotation().errors %}
+                        {{ form.rotation()(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback"> 
+                            {% for errors in form.rotation().errors %}
+                                <span>{{ errors }}</span>)
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.rotation(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.content.label(class="form-control-label") }}
+                    {% if form.content.errors %}
+                        {{ form.content(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback"> 
+                            {% for errors in form.content.errors %}
+                                <span>{{ errors }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.content(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                
+            </fieldset>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+            
+        </form>
+
+    </div>
+{% endblock content %}
+

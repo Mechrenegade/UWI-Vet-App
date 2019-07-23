@@ -1,0 +1,5 @@
+Super User Username : admin@test.com
+Super User Password : test
+
+Clinician Username : ap@my.uwi.edu
+Clinician Password : test

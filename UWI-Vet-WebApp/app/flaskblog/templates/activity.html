@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block content%}
+    <h1>Full activity Report</h1>
+    <div class="row">
+        <div class="col">
+            <table class="table table-striped table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Clincian ID</th><th>Activity Type</th><th>Action ID</th><th>Date/Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for val in Activity %}
+                    <tr>
+                        <td>{{val.clincianID}}</td>
+                        <td>{{val.activityType}}</td>
+                        <td>{{val.actionID}}</td>
+                        <td>{{val.timestamp}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock content %}

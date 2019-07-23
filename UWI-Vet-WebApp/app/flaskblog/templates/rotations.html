@@ -1,0 +1,207 @@
+{% extends "layout.html" %}
+{% block content%}
+    <h1>Rotations Page</h1>
+    <a class="nav-item nav-link" href="{{ url_for('new_comp') }}">Add new Competancy</a>
+    <div class="accordion" id="accordionExample">
+        {% if current_user.rotation == "All" or current_user.rotation == "Anatomic Pathology" %}
+        <div class="card">
+            <div class="card-header" id="headingOne">
+            <h5 class="mb-0">
+                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    Anatomic Pathology
+                </button>
+            </h5>
+            </div>
+
+            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+            <div class="card-body">
+                    <table class="table">  
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Competency ID</th><th>Description</th><th></th><th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tbody> 
+                                       
+                                        {% for val in Comp %}
+                                        {% if val.rot_name == "Anatomic Pathology" %}
+                                        <tr> 
+                                           
+                                            <td>{{val.id}}</td>
+                                            <td>{{val.descrip}}</td>
+                                            {% if current_user.level == 1 %}
+                                                <td><a class="btn btn-secondary btn-sm mt-1 mb-1" href ="{{ url_for('update_comp', comp_id=val.id)}}">Edit</a></td>
+                                                <td>
+                                                    <form action="{{ url_for('delete_comp', comp_id=val.id)}}" method="POST">
+                                                        <button class="btn btn-warning btn-sm mt-1 mb-1" type="button" data-toggle="collapse" data-target="#{{ val.id }}" aria-expanded="false" aria-controls="collapseExample">
+                                                        Delete
+                                                        </button>
+                                                        <div class="collapse" id="{{ val.id }}">
+                                                            <div class="card card-body">
+                                                            Are you sure you want to delete this Competancy?
+                                                            </div>
+                                                    <button class="btn btn-secondary btn-sm mt-1 mb-1" type="button" data-toggle="collapse" data-target="#{{ val.id }}" aria-expanded="false" aria-controls="collapseExample">
+                                                                No
+                                                            </button>
+                                                            <input class="btn btn-danger btn-sm mt-1 mb-1" type="submit" value="Yes">
+                                                    
+                                                         </div>
+                                                    </form>
+                                                </td>
+                                            {% endif %}    
+                                        </tr>
+                                        {% endif %}
+                                        {% endfor %}
+                                    
+                                </tbody>
+                            </tbody>
+                          </table>
+            </div>
+            </div>
+        </div>
+        {% endif %}
+        {% if current_user.rotation == "All" or current_user.rotation == "Anaesthesiology" %}
+        <div class="card">
+            <div class="card-header" id="headingTwo">
+            <h5 class="mb-0">
+                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    Anaesthesiology
+                </button>
+            </h5>
+            </div>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+            <div class="card-body">
+                <table class="table">  
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Competency ID</th><th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tbody>
+                       
+                                {% for val in Comp %}
+                                {% if val.rot_name == "Anaesthesiology" %}
+                                <tr>
+                                    <td>{{val.id}}</td>
+                                    <td>{{val.descrip}}</td>
+                                </tr>
+                                {% endif %}
+                                {% endfor %}
+                            
+                        </tbody>
+                    </tbody>
+                  </table>
+            </div>
+            </div>
+        </div>
+        {% endif %}
+        {% if current_user.rotation == "All" or current_user.rotation == "Clinical Pathology" %}
+        <div class="card">
+            <div class="card-header" id="headingThree">
+            <h5 class="mb-0">
+                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    Clinical Pathology
+                </button>
+            </h5>
+            </div>
+            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+            <div class="card-body">
+                <table class="table">  
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Competency ID</th><th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tbody>
+                            
+                                {% for val in Comp %}
+                                {% if val.rot_name == "Clinical Pathology " %}
+                                <tr>
+                                    <td>{{val.id}}</td>
+                                    <td>{{val.descrip}}</td>
+                                </tr>
+                                {% endif %}
+                                {% endfor %}
+                            
+                        </tbody>
+                    </tbody>
+                  </table>
+            </div>
+            </div>
+        </div>
+        {% endif %}
+        {% if current_user.rotation == "All" or current_user.rotation == "Diagnostic Imaging" %}
+        <div class="card">
+            <div class="card-header" id="headingFour">
+            <h5 class="mb-0">
+                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                    Diagnostic Imaging
+                </button>
+            </h5>
+            </div>
+            <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
+            <div class="card-body">
+                <table class="table">  
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Competency ID</th><th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tbody>
+                            
+                                {% for val in Comp %}
+                                {% if val.rot_name == "Diagnostic Imaging" %}
+                                <tr>
+                                    <td>{{val.id}}</td>
+                                    <td>{{val.descrip}}</td>
+                                </tr>
+                                {% endif %}
+                                {% endfor %}
+                            
+                        </tbody>
+                    </tbody>
+                  </table>
+            </div>
+            </div>
+        </div>
+        {% endif %}
+        <!-- {% if current_user.rotation == "All" or current_user.rotation == "Public Health" %}
+        <div class="card">
+            <div class="card-header" id="headingFive">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                        Public Health
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordionExample">
+                <div class="card-body">
+                    <table class="table">  
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Competency ID</th><th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tbody>        
+                                {% for val in Comp %}
+                                {% if val.rot_name == "Public Health" %}
+                                <tr>
+                                    <td>{{val.id}}</td>
+                                    <td>{{val.descrip}}</td>
+                                </tr>
+                                {% endif %}
+                                {% endfor %}           
+                            </tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% endif %} -->
+    </div>
+{% endblock content %}
