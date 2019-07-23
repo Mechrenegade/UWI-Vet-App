@@ -78,7 +78,7 @@ python-debian==0.1.33
 python-twitter==3.5
 pytz==2018.5
 pyxdg==0.25
-PyYAML==3.12
+PyYAML==5.1
 reportlab==3.5.6
 requests==2.21.0
 requests-oauthlib==1.2.0
