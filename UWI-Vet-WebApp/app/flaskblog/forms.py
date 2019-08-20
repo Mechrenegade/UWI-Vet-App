@@ -23,7 +23,13 @@ class RegistrationForm(FlaskForm):
         ('Anatomic Pathology', 'Anatomic Patholgy'),
         ('Anaesthesiology', 'Anaesthesiology'), 
         ('Clinical Pathology', 'Clinical Pathology'),
-        ('Diagnostic Imaging', 'Diagnostic Imaging')]
+        ('Diagnostic Imaging', 'Diagnostic Imaging'),
+        ('Equine Medicine and Surgery', 'Equine Medicine and Surgery'),
+        ('Avion and Exotics', 'Avion and Exotics'),
+        ('Food Animal Theriogenology', 'Food Animal Theriogenology'),
+        ('Small Animal Medicine', 'Small Animal Medicine'),
+        ('Small Animal Surgery and Anaesthesiology', 'Small Animal Surgery and Anaesthesiology'),
+        ('Public Health', 'Public Health')]
     )            
     password = PasswordField('Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password', 
@@ -138,13 +144,19 @@ class NewCompForm(FlaskForm):
     compid = StringField('Competancy ID', validators=[DataRequired()])
     content = TextAreaField('Description', validators=[DataRequired()])
     rotation = SelectField(
-        'Rotation',
-        choices = [ 
-        ('Anatomic Pathology', 'Anatomic Patholgy'),
-        ('Anaesthesiology', 'Anaesthesiology'), 
-        ('Clinical Pathology', 'Clinical Pathology'),
-        ('Diagnostic Imaging', 'Diagnostic Imaging')]
-    ) 
+            'Rotation',
+            choices = [ 
+            ('Anatomic Pathology', 'Anatomic Patholgy'),
+            ('Anaesthesiology', 'Anaesthesiology'), 
+            ('Clinical Pathology', 'Clinical Pathology'),
+            ('Diagnostic Imaging', 'Diagnostic Imaging'),
+            ('Equine Medicine and Surgery', 'Equine Medicine and Surgery'),
+            ('Avion and Exotics', 'Avion and Exotics'),
+            ('Food Animal Theriogenology', 'Food Animal Theriogenology'),
+            ('Small Animal Medicine', 'Small Animal Medicine'),
+            ('Small Animal Surgery and Anaesthesiology', 'Small Animal Surgery and Anaesthesiology'),
+            ('Public Health', 'Public Health')]
+        ) 
     
 
     submit = SubmitField('Submit')
@@ -160,3 +172,30 @@ class EditCompForm(FlaskForm):
    
     content = TextAreaField('Description', validators=[DataRequired()])
     submit = SubmitField('Submit')
+
+class SearchbyNameForm(FlaskForm):
+    name = StringField('Student Name', validators=[DataRequired()]) 
+    submit = SubmitField('Search')
+
+class NewStudentForm(FlaskForm):
+    studentid = IntegerField('Student ID', validators=[DataRequired()])
+    name = StringField('Enter full name', validators=[DataRequired()])
+    dateenrolled = StringField('DD/MM/YYYY', validators=[DataRequired()])
+    email = StringField('Email address', validators=[DataRequired()])
+    
+
+    submit = SubmitField('Add')
+
+    def validate_compid(self, studentid):
+
+        student = Student.query.filter_by(id=studentid.data).first()
+
+        if student:
+            raise ValidationError('That Student ID is taken. Please enter another.')
+
+    def validate_email(self, email):
+
+        user = User2.query.filter_by(email=email.data).first()
+
+        if user:
+            raise ValidationError('That email address is already being used by another account')

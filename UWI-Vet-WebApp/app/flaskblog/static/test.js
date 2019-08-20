@@ -1,6 +1,8 @@
 function get_student(){
     var id = $("#studentid").val()
+    
     console.log(id);
+    
     $.ajax({
         "headers": {
             "accept": "application/json",
@@ -18,6 +20,8 @@ function get_student(){
             $("#Email").html(resp.email)
         }
     })
+
+    
     $.ajax({
         "headers": {
             "accept": "application/json",
@@ -53,6 +57,7 @@ function get_student(){
         }
     })
 }
+
 
 function update(comp_id, chkbx_num){
     

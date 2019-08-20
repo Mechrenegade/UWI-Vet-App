@@ -6,11 +6,15 @@ from flask_login import LoginManager
 import flask_excel as excel
 from flask_mail import Mail
 
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '767628792793hiid98'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
+
 db = SQLAlchemy(app)
+
 bcrypt = Bcrypt(app)
 excel.init_excel(app)
 login_manager = LoginManager(app)

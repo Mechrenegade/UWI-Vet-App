@@ -95,8 +95,8 @@ class Student(db.Model):
     date_enrolled = db.Column(db.String(100),nullable=False)#(db.DateTime, nullable=False, default=datetime.utcnow)
     email = db.Column(db.String(100),nullable=False)
     
-    def __init__(self, id, name=' ', date_enrolled=' ', email=' '):
-        self.id = id
+    def __init__(self, name=' ', date_enrolled=' ', email=' '):
+        
         self.name = name
         self.date_enrolled = date_enrolled
         self.email = email

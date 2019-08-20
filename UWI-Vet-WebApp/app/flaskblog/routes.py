@@ -3,7 +3,10 @@ import secrets
 from PIL import Image
 from flask import render_template, url_for, flash, redirect, request, jsonify, abort
 from flaskblog import app, db, bcrypt, mail
-from flaskblog.forms import RegistrationForm, LoginForm, EvaluateForm, StudentSearchForm, RotationForm, UpdateAccountForm, ChangePasswordForm, PostForm, RequestResetForm, ResetPasswordForm, NewCompForm, EditCompForm
+from flaskblog.forms import (RegistrationForm, LoginForm, EvaluateForm, StudentSearchForm, 
+                            RotationForm, UpdateAccountForm, ChangePasswordForm, PostForm,
+                            RequestResetForm, ResetPasswordForm, NewCompForm, EditCompForm,
+                            SearchbyNameForm, NewStudentForm)
 from flaskblog.models import User, Post3, Comp, Student, Competancy_rec, User2, Activity
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Message
@@ -28,7 +31,7 @@ def home():
 def about():
     if request.method == 'POST':
         def comp_init_func(row):
-            c = Comp(row['Description'],row['Code'], row['Rotation Name'])
+            c = Comp(row['Description'], row['Code'], row['Rotation Name'])
             return c
             
         request.save_to_database(
@@ -38,18 +41,23 @@ def about():
     return render_template('about.html', title='About')
 
 @app.route("/register", methods=['GET', 'POST'])
+@login_required
 def register():
-    
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user = User2(username=form.username.data, email=form.email.data, level=form.level.data, rotation=form.rotation.data, password=hashed_password)
-        db.session.add(user)
-        db.session.commit()
-        activity = Activity(activityType='AC', actionID=user.id, clincianID=current_user.id)
-        db.session.add(activity)
-        db.session.commit()
-        flash('Your account has been created! You are now able to log in', 'success')
+    if current_user.level == 1:
+        form = RegistrationForm()
+        if form.validate_on_submit():
+            hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+            user = User2(username=form.username.data, email=form.email.data, level=form.level.data, rotation=form.rotation.data, password=hashed_password)
+            db.session.add(user)
+            db.session.commit()
+            activity = Activity(activityType='AC', actionID=user.id, clincianID=current_user.id)
+            db.session.add(activity)
+            db.session.commit()
+            flash('Your account has been created! You are now able to log in', 'success')
+            return redirect(url_for('login'))
+        
+    else:
+        flash('You did not have privilages to view that page', 'danger')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
@@ -110,7 +118,9 @@ def getstudent(id):
 @app.route("/students", methods=['GET', 'POST'])
 @login_required
 def students():
-    #form = StudentSearchForm()
+
+    form2 = SearchbyNameForm()
+    
     if request.method == 'POST':
         def stu_init_func(row):
             s = Student(row['id'],row['Student Name'], row['Date Enrolled'], row['Email'])
@@ -130,7 +140,21 @@ def students():
                 db.session.add(d)
             db.session.commit()
     records = Student.query.all()
-    return render_template('students.html', title='Students.html', Student=records)
+    return render_template('students.html', title='Students.html', Student=records, records=records, form2=form2)
+
+@app.route("/students/<string:studentname>", methods=['GET', 'POST'])
+@login_required
+def searchbyname(studentname):
+
+    name = request.form[studentname]
+    search = "%{}%".format(name)
+    s_rec= Student.query.filter(Student.name.like(search)).first()
+    if s_rec == None:
+        return jsonify({"error":"No Student Exists"})
+    s_rec = s_rec.__dict__
+    s_rec.pop('_sa_instance_state')
+    return jsonify(s_rec)
+    
 
 @app.route("/reports")
 @login_required
@@ -416,3 +440,23 @@ def delete_user(user_id):
     db.session.commit()
     flash('The User Account has been Deleted', 'success')
     return redirect(url_for('competancy'))
+
+@app.route("/student/new", methods=['GET', 'POST'])
+@login_required
+def new_student():
+    form = NewStudentForm()
+    if form.validate_on_submit():
+        student = Student(name=form.name.data, date_enrolled=form.dateenrolled.data, email=form.email.data)
+        db.session.add(student)
+        db.session.commit()
+        hashed_password = bcrypt.generate_password_hash('password').decode('utf-8')
+        suser = User2(username=form.name.data, email=form.email.data, level=3, rotation='none', password=hashed_password)
+        db.session.add(suser)
+        db.session.commit()
+        activity = Activity(activityType='ASS', actionID=form.studentid.data, clincianID=current_user.id)
+        db.session.add(activity)
+        db.session.commit()
+        flash('The Student has been added to the Database', 'success')
+        return redirect(url_for('students'))
+
+    return render_template('new_student.html', title="New Student", form=form, legend='Add a new Student to the Database')
