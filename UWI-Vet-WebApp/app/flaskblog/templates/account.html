@@ -12,34 +12,41 @@
           <div class="col-md-10">
             <p>
               {% if current_user.level == 1 %}
-              <a href="{{ url_for('competancy') }}" class="btn btn-sq-lg btn-primary">
+                <a href="{{ url_for('competancy') }}" class="btn btn-sq-lg btn-primary">
+                    <i class="fa fa-list fa-5x"></i><br/>
+                    Manage <br/>User Accounts
+                </a>
+              {% endif %}
+              {% if current_user.level == 1 or current_user.level == 2 %}
+                <a href="{{ url_for('rotations') }}" class="btn btn-sq-lg btn-success">
                   <i class="fa fa-list fa-5x"></i><br/>
-                  View <br/>Clinicians
-              </a>
+                  View <br/>Rotations
+                </a>
               {% endif %}
-              <a href="{{ url_for('rotations') }}" class="btn btn-sq-lg btn-success">
-                <i class="fa fa-list fa-5x"></i><br/>
-                View <br/>Rotations
-              </a>
-              
-              <a href="{{ url_for('evaluate') }}" class="btn btn-sq-lg btn-info">
-                <i class="fa fa-star fa-5x"></i><br/>
-                Evaluate Students
-              </a>
-              {% if current_user.level == 1 %}
-              <a href="{{ url_for('students') }}" class="btn btn-sq-lg btn-warning">
-                <i class="fa fa-user fa-5x"></i><br/>
-                View/Add <br/>Students
-              </a>
+              {% if current_user.level == 1 or current_user.level == 2 %}
+                <a href="{{ url_for('evaluate') }}" class="btn btn-sq-lg btn-info">
+                  <i class="fa fa-star fa-5x"></i><br/>
+                  Evaluate Students
+                </a>
               {% endif %}
-              <a href="{{ url_for('reports') }}" class="btn btn-sq-lg btn-danger">
-                <i class="fa fa-gear fa-5x"></i><br/>
-                Reports
-              </a>
-              <a href="{{ url_for('reminders') }}" class="btn btn-sq-lg btn-secondary">
-                <i class="fa fa-calendar fa-5x"></i><br/>
-                Set Reminders
-              </a>
+              {% if current_user.level == 1 or current_user.level == 2 %}
+                <a href="{{ url_for('students') }}" class="btn btn-sq-lg btn-warning">
+                  <i class="fa fa-user fa-5x"></i><br/>
+                  View/Add <br/>Students
+                </a>
+              {% endif %}
+              {% if current_user.level == 1 or current_user.level == 2 %}
+                <a href="{{ url_for('reports') }}" class="btn btn-sq-lg btn-danger">
+                  <i class="fa fa-gear fa-5x"></i><br/>
+                  Reports
+                </a>
+              {% endif %}
+              {% if current_user.level == 1 or current_user.level == 2 %}
+                <a href="{{ url_for('reminders') }}" class="btn btn-sq-lg btn-secondary">
+                  <i class="fa fa-calendar fa-5x"></i><br/>
+                  Set Reminders
+                </a>
+              {% endif %}
               <a href="{{ url_for('accmgmt') }}" class="btn btn-sq-lg btn-default">
                 <i class="fa fa-gear fa-5x"></i><br/>
                 Manage Your </br>Account

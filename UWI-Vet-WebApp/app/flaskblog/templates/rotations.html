@@ -5,7 +5,7 @@
 {% block content%}
     <h1>Rotations Page</h1>
     <div class="accordion" id="accordionExample">
-        {% if current_user.rotation == "All" or current_user.rotation == "Anatomic Pathology" %}  
+        {% if current_user.rotation1 == "All" or current_user.rotation1 == "Anatomic Pathology" or current_user.rotation2 == "Anatomic Pathology" %}  
         <!-- // This is where it start that was changed -->
         <div class="card">
             <div class="card-header" id="headingOne">
@@ -68,7 +68,7 @@
             </div>
         </div>
         {% endif %}
-        {% if current_user.rotation == "All" or current_user.rotation == "Anaesthesiology" %}
+        {% if current_user.rotation1 == "All" or current_user.rotation1 == "Anaesthesiology" or current_user.rotation2 == "Anaesthesiology" %}
         <div class="card">
             <div class="card-header" id="headingTwo">
             <h5 class="mb-0">
@@ -126,7 +126,7 @@
             </div>
         </div>
         {% endif %}
-        {% if current_user.rotation == "All" or current_user.rotation == "Clinical Pathology" %}
+        {% if current_user.rotation1 == "All" or current_user.rotation1 == "Clinical Pathology" or current_user.rotation2 == "Clinical Pathology" %}
         <div class="card">
             <div class="card-header" id="headingThree">
             <h5 class="mb-0">
@@ -183,7 +183,7 @@
             </div>
         </div>
         {% endif %}
-        {% if current_user.rotation == "All" or current_user.rotation == "Diagnostic Imaging" %}
+        {% if current_user.rotation1 == "All" or current_user.rotation1 == "Diagnostic Imaging" or current_user.rotation2 == "Diagnostic Imaging" %}
         <div class="card">
             <div class="card-header" id="headingFour">
             <h5 class="mb-0">
@@ -239,7 +239,7 @@
             </div>
         </div>
         {% endif %}
-        {% if current_user.rotation == "All" or current_user.rotation == "Equine Medicine and Surgery" %}
+        {% if current_user.rotation1 == "All" or current_user.rotation1 == "Equine Medicine and Surgery" or current_user.rotation2 == "Equine Medicine and Surgery" %}
         <div class="card">
             <div class="card-header" id="headingFive">
             <h5 class="mb-0">
@@ -297,12 +297,12 @@
             </div>
         </div>
         {% endif %}
-        {% if current_user.rotation == "All" or current_user.rotation == "Avion and Exotics" %}
+        {% if current_user.rotation1 == "All" or current_user.rotation1 == "Avion and Exotics" or current_user.rotation2 == "Avion and Exotics" %}
         <div class="card">
             <div class="card-header" id="headingSix">
             <h5 class="mb-0">
                 <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
-                    Avion and Exotics
+                    Avian and Exotics
                 </button>
             </h5>
             </div>
@@ -318,7 +318,7 @@
                     <tbody>
                         <tbody>
                             {% for val in Comp %}
-                            {% if val.rot_name == "Avion and Exotics" %}
+                            {% if val.rot_name == "Avian and Exotics." %}
                             <tr>
                                 <td>{{val.id}}</td>
                                 <td>{{val.descrip}}</td>
@@ -353,7 +353,7 @@
             </div>
         </div>
         {% endif %}
-        {% if current_user.rotation == "All" or current_user.rotation == "Food Animal Theriogenology" %}
+        {% if current_user.rotation1 == "All" or current_user.rotation1 == "Food Animal Theriogenology" or current_user.rotation2 == "Food Animal Theriogenology" %}
         <div class="card">
             <div class="card-header" id="headingSeven">
             <h5 class="mb-0">
@@ -411,7 +411,7 @@
             </div>
         </div>
         {% endif %}
-        {% if current_user.rotation == "All" or current_user.rotation == "Small Animal Medicine" %}
+        {% if current_user.rotation1 == "All" or current_user.rotation1 == "Small Animal Medicine" or current_user.rotation2 == "Small Animal Medicine" %}
         <div class="card">
             <div class="card-header" id="headingEight">
             <h5 class="mb-0">
@@ -469,7 +469,7 @@
             </div>
         </div>
         {% endif %}
-        {% if current_user.rotation == "All" or current_user.rotation == "Small Animal Surgery and Anaesthesiology" %}
+        {% if current_user.rotation1 == "All" or current_user.rotation1 == "Small Animal Surgery and Anaesthesiology" or current_user.rotation2 == "Small Animal Surgery and Anaesthesiology" %}
         <div class="card">
             <div class="card-header" id="headingNine">
             <h5 class="mb-0">
@@ -527,7 +527,7 @@
         </div>
         {% endif %}
         <!-- Dop down menu for Public health -->
-        {% if current_user.rotation == "All" or current_user.rotation == "Public Health" %}
+        {% if current_user.rotation1 == "All" or current_user.rotation1 == "Public Health" or current_user.rotation2 == "Public Health" %}
         <div class="card">
             <div class="card-header" id="headingTen">
             <h5 class="mb-0">

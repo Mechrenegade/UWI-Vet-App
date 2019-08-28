@@ -15,7 +15,7 @@ function get_student(){
             // $('#root').append(text)
             console.log(resp);
             $("#Name").html(resp.name)
-            $("#ID").html(resp.id)
+            $("#ID").html(resp.studentid)
             $("#Date_enrolled").html(resp.date_enrolled)
             $("#Email").html(resp.email)
         }
@@ -35,6 +35,7 @@ function get_student(){
                 output+="<tr>";
                 output+="<td>"+resp["data"][i].student_id+"</td>"
                 //output+="<td>"+resp["data"][i].clinician_id+"</td>"
+                output+="<td>"+resp["data"][i].comp_name+"</td>"
                 output+="<td>"+resp["data"][i].comp_id+"</td>"
                 //output+="<td>"+resp["data"][i].id+"</td>"
                 if (resp["data"][i].mark==1){
@@ -91,7 +92,7 @@ function get_exp(){
             // $('#root').append(text)
             console.log(resp);
             $("#Name").html(resp.name)
-            $("#ID").html(resp.id)
+            $("#ID").html(resp.studentid)
             $("#Date_enrolled").html(resp.date_enrolled)
             $("#Email").html(resp.email)
         }

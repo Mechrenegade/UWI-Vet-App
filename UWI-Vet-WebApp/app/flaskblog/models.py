@@ -25,7 +25,8 @@ class User2(db.Model, UserMixin):
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
     password = db.Column(db.String(60), nullable=False)
     level = db.Column(db.Integer, nullable=False, default='2')
-    rotation = db.Column(db.String(50), nullable =False)
+    rotation1 = db.Column(db.String(50), nullable =False)
+    rotation2 = db.Column(db.String(50), nullable =False)
 
     def get_reset_token(self, expires_sec=1800):
         s = Serializer(app.config['SECRET_KEY'], expires_sec)
@@ -69,6 +70,7 @@ class Competancy_rec(db.Model):
     id = db.Column(db.Integer, primary_key = True, autoincrement="auto")
     mark = db.Column(db.Boolean, nullable = True )
     comp_id = db.Column(db.String, db.ForeignKey('comp.descrip'), nullable=False)
+    comp_name = db.Column(db.String(100), nullable=False)
     clinician_id = db.Column(db.Integer, db.ForeignKey('user2.id'), nullable=False)
     student_id = db.Column(db.Integer, db.ForeignKey('student.id'), nullable=False)
     timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
@@ -81,7 +83,7 @@ class Comp(db.Model):
     id = db.Column(db.String)
     rot_name = db.Column(db.String(50))
     
-    def __init__(self, descrip, code="", rot_name=""):
+    def __init__(self, descrip="", code="", rot_name=""):
         self.descrip = descrip
         self.id = code
         self.rot_name = rot_name
@@ -90,13 +92,15 @@ class Comp(db.Model):
         return f"Comp('{self.descrip}', '{self.id}', '{self.rot_name}')"
 
 class Student(db.Model):
-    id = db.Column(db.Integer, primary_key = True, autoincrement=False)
+    id = db.Column(db.Integer, primary_key = True, autoincrement=True)
+    studentid = db.Column(db.String(100),nullable=False)
     name = db.Column(db.String(100),nullable=False)
     date_enrolled = db.Column(db.String(100),nullable=False)#(db.DateTime, nullable=False, default=datetime.utcnow)
     email = db.Column(db.String(100),nullable=False)
     
-    def __init__(self, name=' ', date_enrolled=' ', email=' '):
+    def __init__(self, studentid=' ', name=' ', date_enrolled=' ', email=' '):
         
+        self.studentid = studentid
         self.name = name
         self.date_enrolled = date_enrolled
         self.email = email

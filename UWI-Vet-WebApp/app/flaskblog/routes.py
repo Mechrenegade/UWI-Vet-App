@@ -47,7 +47,7 @@ def register():
         form = RegistrationForm()
         if form.validate_on_submit():
             hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-            user = User2(username=form.username.data, email=form.email.data, level=form.level.data, rotation=form.rotation.data, password=hashed_password)
+            user = User2(username=form.username.data, email=form.email.data, level=form.level.data, rotation1=form.rotation1.data, rotation2=form.rotation2.data, password=hashed_password)
             db.session.add(user)
             db.session.commit()
             activity = Activity(activityType='AC', actionID=user.id, clincianID=current_user.id)
@@ -108,7 +108,7 @@ def evaluate():
 @app.route("/student/<id>", methods=['GET'])
 @login_required
 def getstudent(id):
-    s_rec= Student.query.filter_by(id = id).first()
+    s_rec= Student.query.filter_by(studentid = id).first()
     if s_rec == None:
         return jsonify({"error":"No Student Exists"})
     s_rec = s_rec.__dict__
@@ -133,12 +133,18 @@ def students():
         
         record = Student.query.all()
         comp_tbl = Comp.query.all()
+        p = bcrypt.generate_password_hash('password').decode('utf-8')
         for r in record:
+            
+            s = User2(username=r.studentid, email=r.email, password=p, level=3, rotation1='Student', rotation2='None') # automatically adding students user accounts
+            db.session.add(s)
+            db.session.commit()
             # test=r.id
             for c in comp_tbl:
-                d = Competancy_rec(mark=0, comp_id=c.descrip, clinician_id='1', student_id=r.id)
+                d = Competancy_rec(mark=0, comp_id=c.descrip, comp_name=c.rot_name, clinician_id=current_user.id, student_id=r.studentid) #automatically building comp rec table for each student
                 db.session.add(d)
             db.session.commit()
+
     records = Student.query.all()
     return render_template('students.html', title='Students.html', Student=records, records=records, form2=form2)
 
@@ -179,7 +185,7 @@ def searchstudent(s_id):
 
 @app.route("/comp_rec/<student_id>", methods=['GET'])
 @login_required
-def comp_rec(student_id):
+def comp_rec(student_id): #searching comp_rec for a student's record
     records= Competancy_rec.query.filter_by(student_id=student_id).all()
     # records = Competancy_rec.query.join(
     print (records)
@@ -446,7 +452,7 @@ def delete_user(user_id):
 def new_student():
     form = NewStudentForm()
     if form.validate_on_submit():
-        student = Student(name=form.name.data, date_enrolled=form.dateenrolled.data, email=form.email.data)
+        student = Student(studentid=form.studentid.data, name=form.name.data, date_enrolled=form.dateenrolled.data, email=form.email.data)
         db.session.add(student)
         db.session.commit()
         hashed_password = bcrypt.generate_password_hash('password').decode('utf-8')

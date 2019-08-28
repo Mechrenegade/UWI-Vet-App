@@ -17,8 +17,8 @@ class RegistrationForm(FlaskForm):
         ('2', 'Normal')]
     )
 
-    rotation = SelectField(
-        'Designated Rotation',
+    rotation1 = SelectField(
+        'Designated Rotation1',
         choices = [('All', 'All'), 
         ('Anatomic Pathology', 'Anatomic Patholgy'),
         ('Anaesthesiology', 'Anaesthesiology'), 
@@ -30,7 +30,22 @@ class RegistrationForm(FlaskForm):
         ('Small Animal Medicine', 'Small Animal Medicine'),
         ('Small Animal Surgery and Anaesthesiology', 'Small Animal Surgery and Anaesthesiology'),
         ('Public Health', 'Public Health')]
-    )            
+    )
+    rotation2 = SelectField(
+        'Designated Rotation2',
+        choices = [
+        ('Anatomic Pathology', 'Anatomic Patholgy'),
+        ('Anaesthesiology', 'Anaesthesiology'), 
+        ('Clinical Pathology', 'Clinical Pathology'),
+        ('Diagnostic Imaging', 'Diagnostic Imaging'),
+        ('Equine Medicine and Surgery', 'Equine Medicine and Surgery'),
+        ('Avion and Exotics', 'Avion and Exotics'),
+        ('Food Animal Theriogenology', 'Food Animal Theriogenology'),
+        ('Small Animal Medicine', 'Small Animal Medicine'),
+        ('Small Animal Surgery and Anaesthesiology', 'Small Animal Surgery and Anaesthesiology'),
+        ('Public Health', 'Public Health'), 
+        ('None', 'None')]
+    )          
     password = PasswordField('Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password', 
                                     validators=[DataRequired(), EqualTo('password')])

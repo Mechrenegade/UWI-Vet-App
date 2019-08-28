@@ -45,16 +45,29 @@
                     {% endif %}
                 </div>
                 <div class="form-group">
-                    {{ form.rotation.label(class="form-control-label") }}
-                    {% if form.rotation().errors %}
-                        {{ form.rotation()(class="form-control form-control-lg is-invalid") }}
+                    {{ form.rotation1.label(class="form-control-label") }}
+                    {% if form.rotation1().errors %}
+                        {{ form.rotation1()(class="form-control form-control-lg is-invalid") }}
                         <div class="invalid-feedback"> 
-                            {% for errors in form.rotation().errors %}
+                            {% for errors in form.rotation1().errors %}
                                 <span>{{ errors }}</span>)
                             {% endfor %}
                         </div>
                     {% else %}
-                        {{ form.rotation(class="form-control form-control-lg") }}
+                        {{ form.rotation1(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.rotation2.label(class="form-control-label") }}
+                    {% if form.rotation2().errors %}
+                        {{ form.rotation2()(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback"> 
+                            {% for errors in form.rotation2().errors %}
+                                <span>{{ errors }}</span>)
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.rotation2(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
                 <div class="form-group">
