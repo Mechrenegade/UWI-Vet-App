@@ -1,54 +1,540 @@
 {% extends "layout.html" %}
 {% block content%}
     <h1>Evaluation Page</h1>
-    <h4>Enter Student ID</h4>
+    
 
-    <form id="search">
+   <!-- <form id="search">
         <input type="text" id="studentid" msgbox="Student ID">
         <input type="button" value="Search" onclick="get_student()">
+    </form> -->
+    <form id="search" method="POST" action="">
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Enter Student ID</legend> 
+            <div class="form-group">
+                {{ form.studentid.label(class="form-control-label") }}
+                {% if form.studentid.errors %}
+                    {{ form.studentid(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback"> 
+                        {% for errors in form.studentid.errors %}
+                            <span>{{ errors }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.studentid(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+        </fieldset>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-outline-info") }}
+        </div>
     </form>
 
     <br>
-
+    {%  if student %}
+    
     <div class="content section">
         <div id="studentinfo">
+            <legend class="border-bottom mb-4">Student Information</legend>
             <table class="table table-bordered table-condensed">
                 <thead>
                 <tr>
                     <th>ID</th>
-                    <td id="ID"></td>
+                    <td id="ID">{{student.studentid}}</td>
                 </tr>   
                 <tr>
                     <th>Name</th>
-                    <td id="Name"></td>
+                    <td id="Name">{{student.name}}</td>
                 </tr>
                 <tr>
                     <th>Email</th>
-                    <td id="Email"></td>
+                    <td id="Email">{{student.email}}</td>
                 </tr>
                 <tr>
                     <th>Year Enrolled</th>
-                    <td id="Date_enrolled"></td>
+                    <td id="Date_enrolled">{{student.date_enrolled}}</td>
                 </tr>  
                 </thead> 
             </table>
-            <!-- <p id="ID">Student ID:</p>
-            <p id="Name">Student Name:</p>
-            <p id="Email">Student Email:</p>
-            <p id="Date_enrolled">Year Enrolled:</p> -->
+           
         </div>
     </div>
+    {% endif %}
     <br>
+
     <div class="content section">
-        <div id ="comp_table">
-            <table id="data" class="table table-striped table-hover">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>Student ID</th><th>Rotation</th><th>Competency</th><th>Mark</th><th>Update</th>
-                    </tr>
-                </thead>
-            </table>
-        </div>
+       
+            
+
+                <div class="accordion" id="accordionExample">
+                        
+                               
+                    {% if current_user.rotation1 == "All" or current_user.rotation1 == "Anatomic Pathology" or current_user.rotation2 == "Anatomic Pathology" %}  
+                    <!-- // This is where it start that was changed -->
+                    <div class="card">
+                        <div class="card-header" id="headingOne">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                Anatomic Pathology
+                            </button>
+                        </h5>
+                        </div>
+            
+                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                        <div class="card-body">
+                                <table id="data" class="table table-striped table-hover">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th>Student ID</th><th>Rotation</th><th>Competency</th><th>Mark</th><th>Update</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                          
+                                                
+                                                {% for val in records %}
+                                                    
+                                                    {% if val.comp_name == "Anatomic Pathology" %}
+                                                        <tr>
+                                                            <td>{{val.student_id}}</td>
+                                                            <td>{{val.comp_name}}</td>
+                                                            <td>{{val.comp_id}}</td>
+                                                            <td>{% if val.mark == 1 %}
+                                                                    <input type='checkbox' checked id='chkbx-{{val.id}}'>
+                                                                {% else %}
+                                                                    <input type='checkbox' id='chkbx-{{val.id}}'>
+                                                                {% endif %}    
+                                                            </td>
+                                                            <td><a href="{{ url_for('update_rec2', comp_rec=val.id) }}">Update</a></td>
+                                                        </tr>
+                                                    {% endif %}
+                                                    
+                                                {% endfor %}
+                                            
+                                        </tbody>
+                                </table>
+                            
+                                
+                        </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if current_user.rotation1 == "All" or current_user.rotation1 == "Anaesthesiology" or current_user.rotation2 == "Anaesthesiology" %}
+                    <div class="card">
+                        <div class="card-header" id="headingTwo">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                Anaesthesiology
+                            </button>
+                        </h5>
+                        </div>
+                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                        <div class="card-body">
+                                <table id="data" class="table table-striped table-hover">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th>Student ID</th><th>Rotation</th><th>Competency</th><th>Mark</th><th>Update</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                          
+                                                
+                                                {% for val in records %}
+                                                    
+                                                    {% if val.comp_name == "Anaesthesiology" %}
+                                                        <tr>
+                                                            <td>{{val.student_id}}</td>
+                                                            <td>{{val.comp_name}}</td>
+                                                            <td>{{val.comp_id}}</td>
+                                                            <td>{% if val.mark == 1 %}
+                                                                    <input type='checkbox' checked id='chkbx-{{val.id}}'>
+                                                                {% else %}
+                                                                    <input type='checkbox' id='chkbx-{{val.id}}'>
+                                                                {% endif %}    
+                                                            </td>
+                                                            <td><a href="{{ url_for('update_rec2', comp_rec=val.id) }}">Update</a></td>
+                                                        </tr>
+                                                    {% endif %}
+                                                    
+                                                {% endfor %}
+                                            
+                                        </tbody>
+                                </table>
+                        </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if current_user.rotation1 == "All" or current_user.rotation1 == "Clinical Pathology" or current_user.rotation2 == "Clinical Pathology" %}
+                    <div class="card">
+                        <div class="card-header" id="headingThree">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                Clinical Pathology
+                            </button>
+                        </h5>
+                        </div>
+                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                        <div class="card-body">
+                                <table id="data" class="table table-striped table-hover">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th>Student ID</th><th>Rotation</th><th>Competency</th><th>Mark</th><th>Update</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                          
+                                                
+                                                {% for val in records %}
+                                                    
+                                                    {% if val.comp_name == "Clinical Pathology" %}
+                                                        <tr>
+                                                            <td>{{val.student_id}}</td>
+                                                            <td>{{val.comp_name}}</td>
+                                                            <td>{{val.comp_id}}</td>
+                                                            <td>{% if val.mark == 1 %}
+                                                                    <input type='checkbox' checked id='chkbx-{{val.id}}'>
+                                                                {% else %}
+                                                                    <input type='checkbox' id='chkbx-{{val.id}}'>
+                                                                {% endif %}    
+                                                            </td>
+                                                            <td><a href="{{ url_for('update_rec2', comp_rec=val.id) }}">Update</a></td>
+                                                        </tr>
+                                                    {% endif %}
+                                                    
+                                                {% endfor %}
+                                            
+                                        </tbody>
+                                </table>
+                        </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if current_user.rotation1 == "All" or current_user.rotation1 == "Diagnostic Imaging" or current_user.rotation2 == "Diagnostic Imaging" %}
+                    <div class="card">
+                        <div class="card-header" id="headingFour">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                Diagnostic Imaging
+                            </button>
+                        </h5>
+                        </div>
+                        <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
+                        <div class="card-body">
+                                <table id="data" class="table table-striped table-hover">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th>Student ID</th><th>Rotation</th><th>Competency</th><th>Mark</th><th>Update</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                          
+                                                
+                                                {% for val in records %}
+                                                    
+                                                    {% if val.comp_name == "Diagnostic Imaging" %}
+                                                        <tr>
+                                                            <td>{{val.student_id}}</td>
+                                                            <td>{{val.comp_name}}</td>
+                                                            <td>{{val.comp_id}}</td>
+                                                            <td>{% if val.mark == 1 %}
+                                                                    <input type='checkbox' checked id='chkbx-{{val.id}}'>
+                                                                {% else %}
+                                                                    <input type='checkbox' id='chkbx-{{val.id}}'>
+                                                                {% endif %}    
+                                                            </td>
+                                                            <td><a href="{{ url_for('update_rec2', comp_rec=val.id) }}">Update</a></td>
+                                                        </tr>
+                                                    {% endif %}
+                                                    
+                                                {% endfor %}
+                                            
+                                        </tbody>
+                                </table>
+                        </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if current_user.rotation1 == "All" or current_user.rotation1 == "Equine Medicine and Surgery" or current_user.rotation2 == "Equine Medicine and Surgery" %}
+                    <div class="card">
+                        <div class="card-header" id="headingFive">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                Equine Medicine and Surgery
+                            </button>
+                        </h5>
+                        </div>
+                        <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordionExample">
+                        <div class="card-body">
+                                <table id="data" class="table table-striped table-hover">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th>Student ID</th><th>Rotation</th><th>Competency</th><th>Mark</th><th>Update</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                          
+                                                
+                                                {% for val in records %}
+                                                    
+                                                    {% if val.comp_name == "Equine Medicine and Surgery" %}
+                                                        <tr>
+                                                            <td>{{val.student_id}}</td>
+                                                            <td>{{val.comp_name}}</td>
+                                                            <td>{{val.comp_id}}</td>
+                                                            <td>{% if val.mark == 1 %}
+                                                                    <input type='checkbox' checked id='chkbx-{{val.id}}'>
+                                                                {% else %}
+                                                                    <input type='checkbox' id='chkbx-{{val.id}}'>
+                                                                {% endif %}    
+                                                            </td>
+                                                            <td><a href="{{ url_for('update_rec2', comp_rec=val.id) }}">Update</a></td>
+                                                        </tr>
+                                                    {% endif %}
+                                                    
+                                                {% endfor %}
+                                            
+                                        </tbody>
+                                </table>
+                        </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if current_user.rotation1 == "All" or current_user.rotation1 == "Avion and Exotics" or current_user.rotation2 == "Avion and Exotics" %}
+                    <div class="card">
+                        <div class="card-header" id="headingSix">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                                Avian and Exotics
+                            </button>
+                        </h5>
+                        </div>
+                        <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordionExample">
+                        <div class="card-body">
+                                <table id="data" class="table table-striped table-hover">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th>Student ID</th><th>Rotation</th><th>Competency</th><th>Mark</th><th>Update</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                          
+                                                
+                                                {% for val in records %}
+                                                    
+                                                    {% if val.comp_name == "Avian and Exotics." %}
+                                                        <tr>
+                                                            <td>{{val.student_id}}</td>
+                                                            <td>{{val.comp_name}}</td>
+                                                            <td>{{val.comp_id}}</td>
+                                                            <td>{% if val.mark == 1 %}
+                                                                    <input type='checkbox' checked id='chkbx-{{val.id}}'>
+                                                                {% else %}
+                                                                    <input type='checkbox' id='chkbx-{{val.id}}'>
+                                                                {% endif %}    
+                                                            </td>
+                                                            <td><a href="{{ url_for('update_rec2', comp_rec=val.id) }}">Update</a></td>
+                                                        </tr>
+                                                    {% endif %}
+                                                    
+                                                {% endfor %}
+                                            
+                                        </tbody>
+                                </table>
+                        </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if current_user.rotation1 == "All" or current_user.rotation1 == "Food Animal Theriogenology" or current_user.rotation2 == "Food Animal Theriogenology" %}
+                    <div class="card">
+                        <div class="card-header" id="headingSeven">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+                                Food Animal Theriogenology
+                            </button>
+                        </h5>
+                        </div>
+                        <div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#accordionExample">
+                        <div class="card-body">
+                                <table id="data" class="table table-striped table-hover">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th>Student ID</th><th>Rotation</th><th>Competency</th><th>Mark</th><th>Update</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                          
+                                                
+                                                {% for val in records %}
+                                                    
+                                                    {% if val.comp_name == "Food Animal Theriogenology" %}
+                                                        <tr>
+                                                            <td>{{val.student_id}}</td>
+                                                            <td>{{val.comp_name}}</td>
+                                                            <td>{{val.comp_id}}</td>
+                                                            <td>{% if val.mark == 1 %}
+                                                                    <input type='checkbox' checked id='chkbx-{{val.id}}'>
+                                                                {% else %}
+                                                                    <input type='checkbox' id='chkbx-{{val.id}}'>
+                                                                {% endif %}    
+                                                            </td>
+                                                            <td><a href="{{ url_for('update_rec2', comp_rec=val.id) }}">Update</a></td>
+                                                        </tr>
+                                                    {% endif %}
+                                                    
+                                                {% endfor %}
+                                            
+                                        </tbody>
+                                </table>
+                        </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if current_user.rotation1 == "All" or current_user.rotation1 == "Small Animal Medicine" or current_user.rotation2 == "Small Animal Medicine" %}
+                    <div class="card">
+                        <div class="card-header" id="headingEight">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseEight" aria-expanded="false" aria-controls="collapseEight">
+                                Small Animal Medicine
+                            </button>
+                        </h5>
+                        </div>
+                        <div id="collapseEight" class="collapse" aria-labelledby="headingEight" data-parent="#accordionExample">
+                        <div class="card-body">
+                                <table id="data" class="table table-striped table-hover">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th>Student ID</th><th>Rotation</th><th>Competency</th><th>Mark</th><th>Update</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                          
+                                                
+                                                {% for val in records %}
+                                                    
+                                                    {% if val.comp_name == "Small Animal Medicine" %}
+                                                        <tr>
+                                                            <td>{{val.student_id}}</td>
+                                                            <td>{{val.comp_name}}</td>
+                                                            <td>{{val.comp_id}}</td>
+                                                            <td>{% if val.mark == 1 %}
+                                                                    <input type='checkbox' checked id='chkbx-{{val.id}}'>
+                                                                {% else %}
+                                                                    <input type='checkbox' id='chkbx-{{val.id}}'>
+                                                                {% endif %}    
+                                                            </td>
+                                                            <td><a href="{{ url_for('update_rec2', comp_rec=val.id) }}">Update</a></td>
+                                                        </tr>
+                                                    {% endif %}
+                                                    
+                                                {% endfor %}
+                                            
+                                        </tbody>
+                                </table>
+                        </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if current_user.rotation1 == "All" or current_user.rotation1 == "Small Animal Surgery and Anaesthesiology" or current_user.rotation2 == "Small Animal Surgery and Anaesthesiology" %}
+                    <div class="card">
+                        <div class="card-header" id="headingNine">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseNine" aria-expanded="false" aria-controls="collapseNine">
+                                Small Animal Surgery and Anaesthesiology
+                            </button>
+                        </h5>
+                        </div>
+                        <div id="collapseNine" class="collapse" aria-labelledby="headingNine" data-parent="#accordionExample">
+                        <div class="card-body">
+                                <table id="data" class="table table-striped table-hover">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th>Student ID</th><th>Rotation</th><th>Competency</th><th>Mark</th><th>Update</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                          
+                                                
+                                                {% for val in records %}
+                                                    
+                                                    {% if val.comp_name == "Small Animal Surgery and Anaesthesiology" %}
+                                                        <tr>
+                                                            <td>{{val.student_id}}</td>
+                                                            <td>{{val.comp_name}}</td>
+                                                            <td>{{val.comp_id}}</td>
+                                                            <td>{% if val.mark == 1 %}
+                                                                    <input type='checkbox' checked id='chkbx-{{val.id}}'>
+                                                                {% else %}
+                                                                    <input type='checkbox' id='chkbx-{{val.id}}'>
+                                                                {% endif %}    
+                                                            </td>
+                                                            <td><a href="{{ url_for('update_rec2', comp_rec=val.id) }}">Update</a></td>
+                                                        </tr>
+                                                    {% endif %}
+                                                    
+                                                {% endfor %}
+                                            
+                                        </tbody>
+                                </table>
+                        </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    <!-- Dop down menu for Public health -->
+                    {% if current_user.rotation1 == "All" or current_user.rotation1 == "Public Health" or current_user.rotation2 == "Public Health" %}
+                    <div class="card">
+                        <div class="card-header" id="headingTen">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTen" aria-expanded="false" aria-controls="collapseTen">
+                                Public Health
+                            </button>
+                        </h5>
+                        </div>
+                        <div id="collapseTen" class="collapse" aria-labelledby="headingTen" data-parent="#accordionExample">
+                        <div class="card-body">
+                                <table id="data" class="table table-striped table-hover">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th>Student ID</th><th>Rotation</th><th>Competency</th><th>Mark</th><th>Update</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                          
+                                                
+                                                {% for val in records %}
+                                                    
+                                                    {% if val.comp_name == "Public Health" %}
+                                                        <tr>
+                                                            <td>{{val.student_id}}</td>
+                                                            <td>{{val.comp_name}}</td>
+                                                            <td>{{val.comp_id}}</td>
+                                                            <td>{% if val.mark == 1 %}
+                                                                    <input type='checkbox' checked id='chkbx-{{val.id}}'>
+                                                                {% else %}
+                                                                    <input type='checkbox' id='chkbx-{{val.id}}'>
+                                                                {% endif %}    
+                                                            </td>
+                                                            <td><a href="{{ url_for('update_rec2', comp_rec=val.id) }}">Update</a></td>
+                                                        </tr>
+                                                    {% endif %}
+                                                    
+                                                {% endfor %}
+                                            
+                                        </tbody>
+                                </table>
+                        </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+
+            
     </div>
 
     

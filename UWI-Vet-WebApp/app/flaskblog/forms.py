@@ -192,6 +192,10 @@ class SearchbyNameForm(FlaskForm):
     name = StringField('Student Name', validators=[DataRequired()]) 
     submit = SubmitField('Search')
 
+class SearchbyIDForm(FlaskForm):
+    studentid = StringField('studentid', validators=[DataRequired()]) 
+    submit = SubmitField('Search')
+
 class NewStudentForm(FlaskForm):
     studentid = IntegerField('Student ID', validators=[DataRequired()])
     name = StringField('Enter full name', validators=[DataRequired()])

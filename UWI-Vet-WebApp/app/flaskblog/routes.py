@@ -6,7 +6,7 @@ from flaskblog import app, db, bcrypt, mail
 from flaskblog.forms import (RegistrationForm, LoginForm, EvaluateForm, StudentSearchForm, 
                             RotationForm, UpdateAccountForm, ChangePasswordForm, PostForm,
                             RequestResetForm, ResetPasswordForm, NewCompForm, EditCompForm,
-                            SearchbyNameForm, NewStudentForm)
+                            SearchbyNameForm, NewStudentForm, SearchbyIDForm)
 from flaskblog.models import User, Post3, Comp, Student, Competancy_rec, User2, Activity
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Message
@@ -103,7 +103,12 @@ def rotations():
 @app.route("/evaluate", methods=['GET', 'POST'])
 @login_required
 def evaluate():
-    return render_template('evaluate.html', title='Evaluate.html')
+    form = SearchbyIDForm()
+    if form.validate_on_submit():
+        return redirect(url_for('comp_rec2', student_id=form.studentid.data))
+
+
+    return render_template('evaluate.html', title='Evaluate.html', form=form)
 
 @app.route("/student/<id>", methods=['GET'])
 @login_required
@@ -196,6 +201,17 @@ def comp_rec(student_id): #searching comp_rec for a student's record
         r2.pop('_sa_instance_state')
         output["data"].append(r2)
     return jsonify(output)
+    
+
+@app.route("/comp_rec2/<string:student_id>", methods=['GET', 'POST'])
+@login_required
+def comp_rec2(student_id): #searching comp_rec for a student's record
+    
+    form = SearchbyIDForm()
+    count = 0 
+    records= Competancy_rec.query.filter_by(student_id=student_id).all()
+    student= Student.query.filter_by(studentid=student_id).first()
+    return render_template('evaluate.html', title="Evaluate Student", records=records, form=form, student=student, count=count)
 
 @app.route("/update_rec/<comp_rec>/<mark>")
 @login_required
@@ -217,6 +233,25 @@ def update_rec(comp_rec, mark):
     except Exception as e:
         print(e)
         return jsonify({"error":"Error has occured"})
+
+@app.route("/update_rec2/<int:comp_rec>")
+@login_required
+def update_rec2(comp_rec):
+      
+        record= Competancy_rec.query.filter_by(id=comp_rec).first()
+        if record.mark == 0:
+            record.mark = 1
+        else:
+            record.mark = 0
+        
+        db.session.commit()
+        activity = Activity(activityType='MS', actionID=record.student_id, clincianID=current_user.id)
+        db.session.add(activity)
+        db.session.commit()
+        flash('Mark Updated', 'success')
+        return redirect(url_for('comp_rec2', student_id=record.student_id))
+
+       
 
 @app.route("/activity", methods=['GET'])
 @login_required

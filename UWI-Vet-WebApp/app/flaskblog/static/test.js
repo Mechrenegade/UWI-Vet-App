@@ -29,29 +29,29 @@ function get_student(){
         url: '/comp_rec/'+id,
         method: 'GET', 
         success:(resp) => {
-            var output = " "
-            var j = 0
-            for(var i =0; i<resp["data"].length; i++){
-                output+="<tr>";
-                output+="<td>"+resp["data"][i].student_id+"</td>"
-                //output+="<td>"+resp["data"][i].clinician_id+"</td>"
-                output+="<td>"+resp["data"][i].comp_name+"</td>"
-                output+="<td>"+resp["data"][i].comp_id+"</td>"
-                //output+="<td>"+resp["data"][i].id+"</td>"
-                if (resp["data"][i].mark==1){
-                    output+=`<td><input type='checkbox' checked id='chkbx-${i}'></td>`;
-                }
-                else{
-                    output+=`<td><input type='checkbox' id='chkbx-${i}'></td>`;
-                }
+         //   var output = " "
+         //   var j = 0
+         //   for(var i =0; i<resp["data"].length; i++){
+         ////       output+="<tr>";
+          //      output+="<td>"+resp["data"][i].student_id+"</td>"
+         //       //output+="<td>"+resp["data"][i].clinician_id+"</td>"
+        //        output+="<td>"+resp["data"][i].comp_name+"</td>"
+        //        output+="<td>"+resp["data"][i].comp_id+"</td>"
+        //        //output+="<td>"+resp["data"][i].id+"</td>"
+         //       if (resp["data"][i].mark==1){
+        //            output+=`<td><input type='checkbox' checked id='chkbx-${i}'></td>`;
+         //       }
+        //       else{
+         //           output+=`<td><input type='checkbox' id='chkbx-${i}'></td>`;
+        //        }
                 
                 // output+="<td>"+resp["data"][i].mark+"</td>"
                 
-                output+="<td><button onclick='update("+resp["data"][i].id+","+i+")'>Update</button></td>"
-                output+="</tr>"
-            }
-            
-            $("#data").append(output)
+         //       output+="<td><button onclick='update("+resp["data"][i].id+","+i+")'>Update</button></td>"
+        //        output+="</tr>"
+        //    }
+        //    
+         //   $("#data").append(output)
             // let text = $('<p>',{class:'test'}).append(resp)
             // $('#root').append(text)
             console.log(resp);
