@@ -5,6 +5,13 @@
           <img class="rounded-circle account-img" src="{{ image_file }}">
           <div class="media-body">
               <h2 class="account-heading">Welcome {{ current_user.username }}</h2>
+              
+              {% if current_user.level == 3 %}
+                <h3>You are currently:</h3>
+                
+                <h3>{{ percent }} % complete</h3>
+              {% endif %}
+
           </div>
       </div>
     </div>
@@ -47,10 +54,17 @@
                   Set Reminders
                 </a>
               {% endif %}
+              {% if current_user.level == 3 %}
+              <a href="{{ url_for('export') }}" class="btn btn-sq-lg btn-danger">
+                <i class="fa fa-list fa-5x"></i><br/>
+                View your </br>Detailed Report
+              </a>
+              {% endif %}
               <a href="{{ url_for('accmgmt') }}" class="btn btn-sq-lg btn-default">
                 <i class="fa fa-gear fa-5x"></i><br/>
                 Manage Your </br>Account
               </a>
+              
             </p>
           </div>
 
