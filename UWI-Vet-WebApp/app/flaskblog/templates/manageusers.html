@@ -1,14 +1,16 @@
 {% extends "layout.html" %}
 {% block content%}
-    <h1>Reports Page</h1>
-    <a href="{{ url_for('activity') }}" class="btn btn-sq-lg btn-primary">
-      <i class="fa fa-bar-chart-o fa-5x"></i><br/>
-      Activity <br/>Report
+    <h1>Manage User Accounts</h1>
+    <a href="{{ url_for('competancy') }}" class="btn btn-sq-lg btn-primary">
+      <i class="fa fa-tasks fa-5x"></i><br/>
+      View and <br/> Delete User Accounts
     </a>
-    <a href="{{ url_for('export') }}" class="btn btn-sq-lg btn-success">
-      <i class="fa fa-cloud-download fa-5x"></i><br/>
-      Export <br/>Student Data
-    </a>
+    {% if current_user.level == 1 %}
+        <a href="{{ url_for('register') }}" class="btn btn-sq-lg btn-success">
+        <i class="fa fa-plus fa-5x"></i><br/>
+        Add a new Clincian </br>User
+        </a>
+    {% endif %}
     <!-- <table class="table">
             <thead>
               <tr>

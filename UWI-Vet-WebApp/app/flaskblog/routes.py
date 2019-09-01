@@ -172,6 +172,11 @@ def searchbyname(studentname):
 def reports():
     return render_template('reports.html', title='Reports.html')
 
+@app.route("/manageusers")
+@login_required
+def managerusers():
+    return render_template('manageusers.html', title='ManagerUsers.html')
+
 @app.route("/reminders")
 @login_required
 def reminders():
