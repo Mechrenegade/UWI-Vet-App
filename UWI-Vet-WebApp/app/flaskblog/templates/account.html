@@ -2,7 +2,7 @@
 {% block content%}
     <div class="content-section">
       <div class="media">
-          <img class="rounded-circle account-img" src="{{ image_file }}">
+          <img class="rounded-circle account-img" src="{{ image_file }}"></img>
           <div class="media-body">
               <h2 class="account-heading">Welcome {{ current_user.username }}</h2>
               
@@ -55,7 +55,7 @@
                 </a>
               {% endif %}
               {% if current_user.level == 3 %}
-              <a href="{{ url_for('export') }}" class="btn btn-sq-lg btn-danger">
+              <a href="{{ url_for('stu_report', student_id=current_user.username) }}" class="btn btn-sq-lg btn-danger">
                 <i class="fa fa-list fa-5x"></i><br/>
                 View your </br>Detailed Report
               </a>

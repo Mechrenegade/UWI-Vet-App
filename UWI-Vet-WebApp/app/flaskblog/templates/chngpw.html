@@ -16,6 +16,20 @@
                     <fieldset class="form-group">
                         
                         <legend class="border-bottom mb-4">Password Change</legend>
+                        <div class="form-group">
+                            
+                            {{ form.old_password.label(class="form-control-label") }}
+                            {% if form.old_password.errors %}
+                                {{ form.old_password(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback"> 
+                                    {% for errors in form.old_password.errors %}
+                                        <span>{{ errors }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.old_password(class="form-control form-control-lg") }}
+                            {% endif %}
+                        </div>
                         
                         <div class="form-group">
                             

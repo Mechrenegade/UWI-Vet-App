@@ -10,7 +10,7 @@ from flaskblog.forms import (RegistrationForm, LoginForm, EvaluateForm, StudentS
 from flaskblog.models import User, Post3, Comp, Student, Competancy_rec, User2, Activity
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Message
-from datetime import datetime
+from datetime import datetime, date
 import flask_excel as excel
 import json
 
@@ -200,6 +200,25 @@ def reports():
         flash('ONLY CLINICINS CAN ACCESS THIS PAGE','danger')
     return redirect(url_for('home'))
 
+@app.route("/utilization")
+@login_required
+def utilization():
+    if current_user.level == 1 or current_user.level == 2:
+        ap_per = util_percent("Anatomic Pathology")
+        # ans_per = util_percent("Anaesthesiology")
+        cp_per = util_percent("Clinical Pathology ")
+        di_per = util_percent("Diagnostic Imaging")
+        #ems_per = util_percent("Equine Medicine and Surgery")
+        ae_per = util_percent("Avian and Exotics.")
+        #fa_per = util_percent("Food Animal Theriogenology")
+        #sam_per = util_percent("Small Animal Medicine")
+        #sas_per = util_percent("Small Animal Surgery and Anaesthesiology")
+        #ph_per = util_percent("Public Health")
+        return render_template('utilization.html', title='Utilization.html', ap_per=ap_per, cp_per=cp_per, di_per=di_per, ae_per=ae_per)
+    else:
+        flash('ONLY CLINICINS CAN ACCESS THIS PAGE','danger')
+    return redirect(url_for('home'))
+
 @app.route("/manageusers")
 @login_required
 def managerusers():
@@ -261,6 +280,14 @@ def comp_rec2(student_id): #searching comp_rec for a student's record
     records= Competancy_rec.query.filter_by(student_id=student_id).all()
     student= Student.query.filter_by(studentid=student_id).first()
     return render_template('evaluate.html', title="Evaluate Student", records=records, form=form, student=student, count=count)
+
+@app.route("/stu_report/<string:student_id>", methods=['GET', 'POST'])
+@login_required
+def stu_report(student_id): #searching comp_rec for a student's record
+    
+    records= Competancy_rec.query.filter_by(student_id=student_id).all()
+    student= Student.query.filter_by(studentid=student_id).first()
+    return render_template('stu_report.html', title="Student Report", records=records, student=student)
 
 @app.route("/update_rec/<comp_rec>/<mark>")
 @login_required
@@ -627,3 +654,20 @@ def email_timer():
     limit = datetime(2019, 9, 1, 16, 26, 0)
     if now == limit:
         email_blast()
+
+def util_percent(comp_name):
+    
+    records= Competancy_rec.query.filter_by(comp_name=comp_name).all()
+    tcount = 0 #total count
+    mcount = 0 #mark count
+    percent = 0 #percentage
+
+    for val in records:
+        tcount=tcount+1
+        if val.mark == 1:
+            mcount = mcount+1
+
+    percent = (mcount/tcount) * 100         
+    percent = round(percent, 2)
+
+    return percent 

@@ -4,6 +4,7 @@ from flask_login import current_user
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, IntegerField, DateField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from flaskblog.models import User, Student, User2, Comp
+from flaskblog import bcrypt
 
 
 class RegistrationForm(FlaskForm):
@@ -108,7 +109,7 @@ class UpdateAccountForm(FlaskForm):
     confirm_password = PasswordField('Confirm New Password', 
                                     validators=[EqualTo('password')])
     
-    picture = FileField('Upload a Picture', validators=[FileAllowed(['jpg', 'png'])])
+    picture = FileField('Upload a Picture', validators=[FileAllowed(['jpg', 'png', 'jpeg'])])
 
     submit = SubmitField('Update')
 
@@ -125,11 +126,21 @@ class UpdateAccountForm(FlaskForm):
                 raise ValidationError('That email is taken. Please enter another email')
 
 class ChangePasswordForm(FlaskForm):
-    
+
+    old_password = PasswordField('Old Password', validators=[DataRequired()])
     password = PasswordField('New Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm New Password', 
                                     validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Update')
+
+
+    def validate_old_password(self, old_password):
+
+        old_pw=""
+        old_pw=old_password.data
+
+        if bcrypt.check_password_hash(current_user.password, old_pw) == False:
+            raise ValidationError('Incorrect password please re-enter your current password')
 
 class PostForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
