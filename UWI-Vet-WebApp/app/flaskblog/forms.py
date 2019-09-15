@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from flask import flash
 from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, IntegerField, DateField, TextAreaField
@@ -203,9 +204,25 @@ class SearchbyNameForm(FlaskForm):
     name = StringField('Student Name', validators=[DataRequired()]) 
     submit = SubmitField('Search')
 
+    def validate_name(self, name):
+
+        user = Student.query.filter(Student.name.contains(name.data)).first()
+
+        if user is None:
+            flash('There is no student with that name','danger')
+            raise ValidationError('There is no Student with that name')
+
 class SearchbyIDForm(FlaskForm):
     studentid = StringField('studentid', validators=[DataRequired()]) 
     submit = SubmitField('Search')
+
+    def validate_studentid(self, studentid):
+
+        user = Student.query.filter_by(id=studentid.data).first()
+
+        if user is None:
+            flash('There is no student with that ID','danger')
+            raise ValidationError('There is no Student with that ID')
 
 class NewStudentForm(FlaskForm):
     studentid = IntegerField('Student ID', validators=[DataRequired()])

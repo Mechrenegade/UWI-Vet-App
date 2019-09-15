@@ -119,10 +119,17 @@ def rotations():
 def evaluate():
     if current_user.level == 1 or current_user.level == 2:
         form = SearchbyIDForm()
+        form2 = SearchbyNameForm()
+
+        students = ''
+
+        if form2.validate_on_submit(): #searching by name
+            students = Student.query.filter(Student.name.contains(form2.name.data)).all()
+        
         if form.validate_on_submit():
             return redirect(url_for('comp_rec2', student_id=form.studentid.data))
 
-        return render_template('evaluate.html', title='Evaluate.html', form=form)
+        return render_template('evaluate.html', title='Evaluate.html', form=form, form2=form2, students=students)
     else:
         flash('ONLY ADMINS CAN ACCESS THIS PAGE','danger')
     return redirect(url_for('home'))
@@ -146,6 +153,11 @@ def getstudent(id):
 def students():
     if current_user.level == 1 or current_user.level == 2:
         form2 = SearchbyNameForm()
+
+        students = ''
+
+        if form2.validate_on_submit(): #searching by name
+            students = Student.query.filter(Student.name.contains(form2.name.data)).all()
         
         if request.method == 'POST':
             def stu_init_func(row):
@@ -172,7 +184,7 @@ def students():
                 db.session.commit()
 
         records = Student.query.all()
-        return render_template('students.html', title='Students.html', Student=records, records=records, form2=form2)
+        return render_template('students.html', title='Students.html', Student=records, records=records, form2=form2, students=students)
     else:
         flash('ONLY CLINICIANS CAN ACCESS THIS PAGE','danger')
     return redirect(url_for('home'))
@@ -218,6 +230,7 @@ def utilization():
     else:
         flash('ONLY CLINICINS CAN ACCESS THIS PAGE','danger')
     return redirect(url_for('home'))
+
 
 @app.route("/manageusers")
 @login_required
@@ -276,10 +289,17 @@ def comp_rec(student_id): #searching comp_rec for a student's record
 def comp_rec2(student_id): #searching comp_rec for a student's record
     
     form = SearchbyIDForm()
+    form2 = SearchbyNameForm()
+    students=''
+    if form2.validate_on_submit(): #searching by name
+            students = Student.query.filter(Student.name.contains(form2.name.data)).all()
+        
+    if form.validate_on_submit():
+        return redirect(url_for('comp_rec2', student_id=form.studentid.data))
     count = 0 
     records= Competancy_rec.query.filter_by(student_id=student_id).all()
     student= Student.query.filter_by(studentid=student_id).first()
-    return render_template('evaluate.html', title="Evaluate Student", records=records, form=form, student=student, count=count)
+    return render_template('evaluate.html', title="Evaluate Student", records=records, form=form, form2=form2, student=student, students=students, count=count)
 
 @app.route("/stu_report/<string:student_id>", methods=['GET', 'POST'])
 @login_required
@@ -671,3 +691,4 @@ def util_percent(comp_name):
     percent = round(percent, 2)
 
     return percent 
+
