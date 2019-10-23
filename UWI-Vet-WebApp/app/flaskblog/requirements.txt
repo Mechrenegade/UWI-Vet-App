@@ -54,7 +54,7 @@ netifaces==0.10.4
 oauthlib==3.0.1
 olefile==0.46
 pexpect==4.6.0
-Pillow==6.0.0
+Pillow==6.2.0
 protobuf==3.0.0
 pycairo==1.16.2
 pycparser==2.19
